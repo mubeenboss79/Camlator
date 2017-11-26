@@ -12,6 +12,6 @@ next_uid	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src
 oc	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let oc = Lwt_io.of_fd Lwt_io.Output fd in$/;"	v	language:OCaml
 out_channels	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let out_channels = ref ChannelMap.empty$/;"	v	language:OCaml
 serv	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let serv = create_server sock in$/;"	v	language:OCaml
-sock	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let sock = create_socket Unix.inet_addr_loopback 9000 100 in$/;"	v	language:OCaml
+sock	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let sock = create_socket Unix.inet_addr_any 9000 100 in$/;"	v	language:OCaml
 t	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  type t = int$/;"	t	language:OCaml	Module:Int
 uid	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let uid = !next_uid in$/;"	v	language:OCaml

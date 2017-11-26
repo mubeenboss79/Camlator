@@ -1,26 +1,22 @@
-(** Multi-client server example.
-
-    Clients can increment a shared counter or read its current value.
-
-    Build with: ocamlfind ocamlopt -package lwt,lwt.unix -linkpkg -o counter-server ./counter-server.ml
- *)
-
 open Lwt
 
 (* UID of each client *)
 let next_uid = ref 0
 
+(* Wrapper around [int] that is an OrderedType *)
 module Int = struct
   type t = int
-
   let compare a b =
     if a < b then -1
     else if a > b then 1
     else 0
 end
 
+(* Currently maps some UID to an output channel, but ideally it would map a UID
+ * to a Client_Data, which stores all the information about the client (from
+ * internal data like their output channel to application data like their name
+ * or preferred language) *)
 module ChannelMap = Map.Make(Int)
-
 let out_channels = ref ChannelMap.empty
 
 (**************** Weird logging stuff ****************)
@@ -41,11 +37,13 @@ let () =
 (******************************************************)
 
 (* [handle_message msg] takes a [msg] and returns some response as a string
- * based on a custom protocol. *)
+ * based on a custom protocol. The main messages that will be sent are of the
+ * form "chat <id> <msg>", where <id> is the id of the sender and <msg> is
+ * whatever message they're trying to send *)
 let handle_message msg =
   match Str.bounded_split (Str.regexp_string " ") msg 3 with
     | ["chat"; cid; msg] -> 
-        ChannelMap.map (fun oc -> Lwt_io.write_line oc msg) !out_channels 
+        ChannelMap.map (fun oc -> Lwt_io.write_line oc msg) !out_channels
         |> ignore;
         "Message sent."
     | ["parts"] -> 
@@ -101,7 +99,7 @@ let create_socket listen_address port backlog =
 
 (* Main Function -- Starts up the server *)
 let () =
-  let sock = create_socket Unix.inet_addr_loopback 9000 10 in
+  let sock = create_socket Unix.inet_addr_any 9000 100 in
   let serv = create_server sock in
   Lwt_main.run @@ serv ()
 

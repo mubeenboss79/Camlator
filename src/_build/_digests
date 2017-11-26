@@ -1,4 +1,4 @@
-"Rule: ocaml: cmo* -> byte (%=chat_server )": "\165\252\184\027y3_\028\160i\222+\173\170\223\160"
-"Rule: ocaml dependencies ml (%=chat_server )": "k\177\014P\210\174\141\188\231\165\166I\240\145/\174"
-"Resource: /Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml": "/I\161\002p\253\167\2337q\179iM\224\141\142"
-"Rule: ocaml: ml -> cmo & cmi (%=chat_server )": "v\1326\216\149\128\200p\251\169\015\230\184\212\166\""
+"Rule: ocaml: cmo* -> byte (%=chat_server )": "\n\230y\159\031\175\006+\190\159-\216\022\174\228Q"
+"Rule: ocaml dependencies ml (%=chat_server )": "lM\192l\140\202\173\2340j\135\188\228\026\191\003"
+"Resource: /Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml": "^\007\233\174\224\138\015\149\1283\1289\194\219\253\022"
+"Rule: ocaml: ml -> cmo & cmi (%=chat_server )": "w\r\236\242\180w\252\005/\245\227!>\000\245\212"
