@@ -1,8 +1,0 @@
-### Starting build.
-# Target: chat_server.ml.depends, tags: { extension:ml, file:chat_server.ml, ocaml, ocamldep, quiet }
-/Users/chrisroman/.opam/4.05.0/bin/ocamldep.opt -modules chat_server.ml > chat_server.ml.depends
-# Target: chat_server.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:chat_server.cmo, file:chat_server.ml, implem, ocaml, quiet }
-/Users/chrisroman/.opam/4.05.0/bin/ocamlc.opt -c -I /Users/chrisroman/.opam/4.05.0/lib/bytes -I /Users/chrisroman/.opam/4.05.0/lib/lwt -I /Users/chrisroman/.opam/4.05.0/lib/ocaml -I /Users/chrisroman/.opam/4.05.0/lib/result -o chat_server.cmo chat_server.ml
-# Target: chat_server.byte, tags: { byte, dont_link_with, extension:byte, file:chat_server.byte, link, ocaml, program, quiet }
-/Users/chrisroman/.opam/4.05.0/bin/ocamlc.opt -I /Users/chrisroman/.opam/4.05.0/lib/bytes -I /Users/chrisroman/.opam/4.05.0/lib/lwt -I /Users/chrisroman/.opam/4.05.0/lib/ocaml -I /Users/chrisroman/.opam/4.05.0/lib/result result.cma lwt.cma unix.cma bigarray.cma lwt_log.cma lwt_unix.cma str.cma chat_server.cmo -o chat_server.byte
-# Compilation successful.
