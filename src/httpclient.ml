@@ -19,7 +19,7 @@ let translate_msg msg =
   let ret_output = run ("node js_files/generate_token.js" ^ " " ^ msg) in
   let tokens = Str.split (Str.regexp_string " ") ret_output in
   let url =
-    "http://translate.google.com/translate_a/single?client=t&sl=en&tl=es&hl=es"^
+    "http://translate.google.com/translate_a/single?client=t&sl=en&tl=jp&hl=jp"^
     "&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe="^
     "UTF-8&otf=1&ssel=0&tsel=0&kc=7&q=" ^
     msg ^ "&" ^ (List.nth tokens 0) ^ "=" ^ (List.nth tokens 1)

@@ -15,7 +15,7 @@ let enter_callback entry text =
   text#set_buffer n_buff;
   flush stdout;
   Httpclient.translate_msg str_utf8 >>= (fun t_msg ->
-  start_send ("chat 1 " ^ t_msg) () >>= Lwt.return);
+  start_send ("chat 1 " ^ t_msg) () >>= Lwt.return) |> ignore;
   ()
 (*   Chatclient.broadcast_msg t_msg *)
 
@@ -36,15 +36,17 @@ let setup_threads () =
   let waiter, wakener = Lwt.wait () in
 
   let window=GWindow.window ~title: "GTK Entry" ~width: 500 ~height: 350 () in
-  window#connect#destroy ~callback:Main.quit;
+  window#connect#destroy ~callback:Main.quit |> ignore;
 
   let vbox = GPack.vbox ~packing: window#add () in
   let scrollwin = GBin.scrolled_window ~packing:vbox#add () in 
   let text = GText.view ~packing: scrollwin#add () in 
+  text#buffer#insert "Welcome to the CS3110 chatroom!";
 
   (* text#misc#set_size_chars ~width:20 ~height:5 (); *)
   let entry = GEdit.entry ~max_length: 50 ~packing: vbox#add () in
-  entry#connect#activate ~callback:(fun () -> enter_callback entry text);
+  entry#connect#activate ~callback:(fun () -> enter_callback entry text)
+   |> ignore;
   entry#set_text "Hello";
   entry#append_text " world";
   entry#select_region ~start:0 ~stop:entry#text_length;
@@ -53,16 +55,18 @@ let setup_threads () =
 
   let check = GButton.check_button ~label: "Editable" ~active: true
       ~packing: hbox#add () in
-  check#connect#toggled
-    ~callback:(fun () -> entry_toggle_editable check entry);
+  check#connect#toggled ~callback:(fun () -> entry_toggle_editable check entry);
+  |> ignore;
 
-  let check =
-    GButton.check_button ~label:"Visible" ~active:true ~packing:hbox#add () in
-  check#connect#toggled
+  let check = GButton.check_button 
+    ~label:"Visible" ~active:true ~packing:hbox#add ()
+  in
+  check#connect#toggled 
     ~callback:(fun () -> entry_toggle_visibility check entry);
+    |> ignore;
 
   let button = GButton.button ~label: "Close" ~packing: vbox#add () in
-  button#connect#clicked ~callback:window#destroy;
+  button#connect#clicked ~callback:window#destroy |> ignore;
   button#grab_default ();
 
   (* Quit when the window is closed. *)

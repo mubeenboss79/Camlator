@@ -5,8 +5,8 @@ ChannelMap	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/s
 Chatbox	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^open Printf$/;"	M	language:OCaml
 Chatclient	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatclient.ml	/^open Lwt$/;"	M	language:OCaml
 Chat_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^(* NOTE: To create client side sockets, use WebSockets *)$/;"	M	language:OCaml
+check	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let check = GButton.check_button $/;"	v	language:OCaml
 check	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let check = GButton.check_button ~label: "Editable" ~active: true$/;"	v	language:OCaml
-check	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let check =$/;"	v	language:OCaml
 compare	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let compare a b =$/;"	v	language:OCaml	Module:Int
 create_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let create_server sock =$/;"	v	language:OCaml
 create_socket	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let create_socket listen_address port backlog =$/;"	v	language:OCaml
