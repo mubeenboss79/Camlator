@@ -256,7 +256,7 @@ let enter_callback entry text =
   let n_buff = GText.buffer ~text:(!messages) () in
   text#set_buffer n_buff;
   flush stdout;
-  start_send ("chat 1 " ^ str_utf8) () |> ignore;
+  start_send ("chat 1 " ^ !user_name ^ ": " ^str_utf8) () |> ignore;
   ()
 
 let name_callback entry text =
@@ -270,7 +270,7 @@ let name_callback entry text =
   let n_buff = GText.buffer ~text:(!messages) () in
   text#set_buffer n_buff;
   flush stdout;
-  start_send ("chat 1 " ^ str_utf8) () |> ignore;
+  start_send ("chat 1 " ^ !user_name ^ " changed their name to: " ^ str_utf8) () |> ignore;
   ()
 (*
   Httpclient.translate_msg str_utf8 >>= (fun t_msg ->
@@ -328,7 +328,7 @@ let setup_threads () =
 
   setup_combobox_text hbox#pack; 
 
-  (*Make the User name's frams and text box *)
+  (*Make the User name's frames and text box *)
   let namebox = GPack.vbox ~packing: (hbox#pack ~padding: 30) () in
   let tmp = GBin.frame ~label:"Name" ~packing: namebox#add () in
   let box = GPack.vbox ~border_width:8 ~packing:tmp#add () in
