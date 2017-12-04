@@ -1,32 +1,46 @@
 open Printf
 open GMain
 
+let (>>=) = Lwt.bind
 let messages = ref ""
+let start_recv, start_send = Chatclient.create_channels ()
 
 let enter_callback entry text =
-  printf "Entry contents: %s\n" entry#text;
-  flush stdout;
-  let s = Glib.Convert.locale_to_utf8 (entry#text) in
-  messages := !messages ^ "\n" ^ s;
+  let entry_text = entry#text in
+  printf "Entry contents: %s\n" entry_text;
+  entry#set_text "";
+  let str_utf8 = Glib.Convert.locale_to_utf8 entry_text in
+  messages := !messages ^ "\n" ^ str_utf8;
   let n_buff = GText.buffer ~text:(!messages) () in
   text#set_buffer n_buff;
-  entry#set_text ""
+  flush stdout;
+  Httpclient.translate_msg str_utf8 >>= (fun t_msg ->
+  start_send ("chat 1 " ^ t_msg) () >>= Lwt.return);
+  ()
+(*   Chatclient.broadcast_msg t_msg *)
 
 let entry_toggle_editable button entry =
   entry#set_editable button#active
 
 let entry_toggle_visibility button entry = 
    entry#set_visibility button#active 
-let main () =
 
-  let window =
-    GWindow.window ~title: "GTK Entry" ~width: 500 ~height: 350 () in
-    window#connect#destroy ~callback:Main.quit;
+let setup_threads () =
+  (* Initializes GTK. *)
+  ignore (GMain.init ());
+
+  (* Install Lwt<->Glib integration. *)
+  Lwt_glib.install ();
+
+  (* Thread which is wakeup when the main window is closed. *)
+  let waiter, wakener = Lwt.wait () in
+
+  let window=GWindow.window ~title: "GTK Entry" ~width: 500 ~height: 350 () in
+  window#connect#destroy ~callback:Main.quit;
 
   let vbox = GPack.vbox ~packing: window#add () in
   let scrollwin = GBin.scrolled_window ~packing:vbox#add () in 
   let text = GText.view ~packing: scrollwin#add () in 
-  text#buffer#insert "こんにちは\n" ; 
 
   (* text#misc#set_size_chars ~width:20 ~height:5 (); *)
   let entry = GEdit.entry ~max_length: 50 ~packing: vbox#add () in
@@ -51,8 +65,18 @@ let main () =
   button#connect#clicked ~callback:window#destroy;
   button#grab_default ();
 
+  (* Quit when the window is closed. *)
+  ignore (window#connect#destroy (Lwt.wakeup wakener));
+
   window#show ();
 
-  Main.main ()
+  (* Wait for it to be closed. *)
+  (waiter, start_recv messages text)
 
-let _ = main ()
+let () =
+  let start_gui, do_recv = setup_threads () in
+  let threads = Lwt.join [
+    start_gui;
+    do_recv();
+  ] in
+  Lwt_main.run threads

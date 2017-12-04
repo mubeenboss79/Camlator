@@ -1,3 +1,4 @@
-default:
+server:
 	ocamlbuild chat_server.ml -pkg lwt -pkg lwt.unix -pkg str chat_server.byte
-	ocamlbuild chat_client.ml -pkg lwt -pkg lwt.unix -pkg str chat_client.byte
+chatbox:
+	ocamlbuild -use-ocamlfind -pkgs 'lablgtk2.auto-init lwt lwt_glib cohttp cohttp-lwt-unix str yojson' 'chatbox.byte'

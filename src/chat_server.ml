@@ -42,10 +42,14 @@ let () =
  * based on a custom protocol. The main messages that will be sent are of the
  * form "chat <id> <msg>", where <id> is the id of the sender and <msg> is
  * whatever message they're trying to send *)
-let handle_message msg =
+let handle_message msg uid =
   match Str.bounded_split (Str.regexp_string " ") msg 3 with
     | ["chat"; cid; msg] -> 
-        ChannelMap.map (fun oc -> Lwt_io.write_line oc msg) !out_channels
+        ChannelMap.mapi
+          (fun key oc -> 
+            if key <> uid then Lwt_io.write_line oc msg
+            else return ()) 
+          !out_channels
         |> ignore;
         "Message sent."
     | ["parts"] -> 
@@ -63,8 +67,9 @@ let rec handle_connection ic oc uid () =
       match msg with
       | Some msg -> 
           Lwt_log.info ("Got message: " ^ msg) >>= fun () ->
-          let reply = handle_message msg in
-          Lwt_io.write_line oc reply >>= handle_connection ic oc uid
+          let _ = handle_message msg uid in
+(*           Lwt_io.write_line oc reply >>=  *)
+          handle_connection ic oc uid ()
       | None -> 
           out_channels := ChannelMap.remove uid !out_channels;
           Lwt_log.info "Connection closed" >>= return)

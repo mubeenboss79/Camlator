@@ -1,4 +1,3 @@
-(* client_example.ml *)
 open Lwt
 open Cohttp
 open Cohttp_lwt_unix
@@ -16,8 +15,7 @@ let run cmd =
   ignore(Unix.close_process_in inp);
   res
 
-let body =
-  let msg = "Mush is a gay man" in
+let translate_msg msg =
   let ret_output = run ("node js_files/generate_token.js" ^ " " ^ msg) in
   let tokens = Str.split (Str.regexp_string " ") ret_output in
   let url =
@@ -33,8 +31,16 @@ let body =
   Printf.printf "Headers: %s\n" (resp |> Response.headers |> Header.to_string);
   body |> Cohttp_lwt.Body.to_string >|= fun body ->
   Printf.printf "Body of length: %d\n" (String.length body);
-  body
+  Printf.printf "Body: %s\n" (body);
+  let open Yojson.Basic.Util in
+  let lst1 = Yojson.Basic.from_string body |> to_list in
+  let lst2 = List.nth lst1 0 |> to_list in
+  let lst3 = List.nth lst2 0 |> to_list in
+  List.nth lst3 0 |> to_string
+  
 
+(*
 let () =
   let body = Lwt_main.run body in
   print_endline ("Received body\n" ^ body)
+*)

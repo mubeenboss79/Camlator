@@ -17,21 +17,23 @@ let () =
 (*   let () = Lwt_log.add_rule "*" Lwt_log.Info *)
 (******************************************************)
 
-let rec handle_outgoing_msg oc () =
-  Lwt_io.read_line Lwt_io.stdin >>= fun msg ->
-  match msg with
-  | exception End_of_file -> return ()
-  | user_input -> Lwt_io.write_line oc user_input >>= handle_outgoing_msg oc
+let rec handle_outgoing_msg oc msg () =
+  Lwt_io.write_line oc msg >>= return
 
-let rec handle_incoming_msg ic oc () =
+let rec handle_incoming_msg ic oc messages textbox () =
+  Lwt_log_core.info "Listening for incoming messages..." >>= fun () ->
   Lwt_io.read_line_opt ic >>=
-    (fun msg ->
-      match msg with
+    (fun msg_opt ->
+      match msg_opt with
+      | None     -> Lwt_log.info "Connection closed" >>= return
       | Some msg -> 
-          Lwt_log.info ("Got message: " ^ msg) >>=
-          handle_incoming_msg ic oc
-      | None -> 
-          Lwt_log.info "Connection closed" >>= return)
+        let str_utf8 = Glib.Convert.locale_to_utf8 msg in
+        messages := !messages ^ "\n" ^ str_utf8;
+        let n_buff = GText.buffer ~text:(!messages) () in
+        textbox#set_buffer n_buff;
+        Lwt_log.info ("Got message: " ^ msg) >>=
+        handle_incoming_msg ic oc messages textbox
+    )
 
 let create_channels () =
   let open Lwt_unix in
@@ -42,7 +44,9 @@ let create_channels () =
   (handle_incoming_msg ic oc), (handle_outgoing_msg oc)
 
 (* Run client *)
-let () =
+(*
+let start_client () =
   let start_inc, start_out = create_channels () in
   let threads = Lwt.join [start_out (); start_inc ()] in
   Lwt_main.run threads;
+*)
