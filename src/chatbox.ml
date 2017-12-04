@@ -2,7 +2,8 @@ open Printf
 open GMain
 
 let (>>=) = Lwt.bind
-let messages = ref ""
+let messages = ref "Welcome to the CS3110 chatroom!"
+let pref_lang = ref "es"
 let start_recv, start_send = Chatclient.create_channels ()
 
 let enter_callback entry text =
@@ -14,9 +15,12 @@ let enter_callback entry text =
   let n_buff = GText.buffer ~text:(!messages) () in
   text#set_buffer n_buff;
   flush stdout;
+  start_send ("chat 1 " ^ str_utf8) () |> ignore;
+  ()
+(*
   Httpclient.translate_msg str_utf8 >>= (fun t_msg ->
   start_send ("chat 1 " ^ t_msg) () >>= Lwt.return) |> ignore;
-  ()
+*)
 (*   Chatclient.broadcast_msg t_msg *)
 
 let entry_toggle_editable button entry =
@@ -75,12 +79,12 @@ let setup_threads () =
   window#show ();
 
   (* Wait for it to be closed. *)
-  (waiter, start_recv messages text)
+  (waiter, start_recv messages text pref_lang)
 
 let () =
-  let start_gui, do_recv = setup_threads () in
+  let start_gui, handle_incoming_msg = setup_threads () in
   let threads = Lwt.join [
     start_gui;
-    do_recv();
+    handle_incoming_msg ();
   ] in
   Lwt_main.run threads

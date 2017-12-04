@@ -20,20 +20,19 @@ let () =
 let rec handle_outgoing_msg oc msg () =
   Lwt_io.write_line oc msg >>= return
 
-let rec handle_incoming_msg ic oc messages textbox () =
+let rec handle_incoming_msg ic oc messages textbox pref_lang () =
   Lwt_log_core.info "Listening for incoming messages..." >>= fun () ->
-  Lwt_io.read_line_opt ic >>=
-    (fun msg_opt ->
-      match msg_opt with
-      | None     -> Lwt_log.info "Connection closed" >>= return
-      | Some msg -> 
-        let str_utf8 = Glib.Convert.locale_to_utf8 msg in
-        messages := !messages ^ "\n" ^ str_utf8;
-        let n_buff = GText.buffer ~text:(!messages) () in
-        textbox#set_buffer n_buff;
-        Lwt_log.info ("Got message: " ^ msg) >>=
-        handle_incoming_msg ic oc messages textbox
-    )
+  Lwt_io.read_line_opt ic >>= fun msg_opt ->
+  match msg_opt with
+  | None     -> Lwt_log.info "Connection closed" >>= return
+  | Some msg -> 
+      Httpclient.translate_msg msg !pref_lang >>= fun tr_msg ->
+      let str_utf8 = Glib.Convert.locale_to_utf8 tr_msg in
+      messages := !messages ^ "\n" ^ str_utf8;
+      let n_buff = GText.buffer ~text:(!messages) () in
+      textbox#set_buffer n_buff;
+      Lwt_log.info ("Got message: " ^ msg) >>=
+      handle_incoming_msg ic oc messages textbox pref_lang
 
 let create_channels () =
   let open Lwt_unix in
