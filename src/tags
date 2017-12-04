@@ -1,17 +1,32 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
 ChannelMap	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^module ChannelMap = Map.Make(Int)$/;"	M	language:OCaml
-Chat_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^open Lwt$/;"	M	language:OCaml
+Chat_client	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^open Lwt$/;"	M	language:OCaml
+Chat_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^(* NOTE: To create client side sockets, use WebSockets *)$/;"	M	language:OCaml
 compare	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let compare a b =$/;"	v	language:OCaml	Module:Int
 create_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let create_server sock =$/;"	v	language:OCaml
 create_socket	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let create_socket listen_address port backlog =$/;"	v	language:OCaml
+google_translate_token_	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/modules.ml	/^let google_translate_token_ = require_module "google-translate-token"$/;"	v	language:OCaml
 handle_connection	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let rec handle_connection ic oc uid () =$/;"	v	language:OCaml
+handle_incoming_msg	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^let rec handle_incoming_msg ic oc () =$/;"	v	language:OCaml
 handle_message	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let handle_message msg =$/;"	v	language:OCaml
+handle_outgoing_msg	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^let rec handle_outgoing_msg oc () =$/;"	v	language:OCaml
+ic	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^  let ic = Lwt_io.of_fd Lwt_io.Input sockfd in$/;"	v	language:OCaml
 ic	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let ic = Lwt_io.of_fd Lwt_io.Input fd in$/;"	v	language:OCaml
 Int	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^module Int = struct$/;"	M	language:OCaml
+Lablgtk_test	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/lablgtk_test.ml	/^$/;"	M	language:OCaml
+locale	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/lablgtk_test.ml	/^let locale = GtkMain.Main.init ()$/;"	v	language:OCaml
+main	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/lablgtk_test.ml	/^let main () =$/;"	v	language:OCaml
+Modules	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/modules.ml	/^let require_module s =$/;"	M	language:OCaml
 next_uid	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let next_uid = ref 0$/;"	v	language:OCaml
+oc	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^  let oc = Lwt_io.of_fd Lwt_io.Output sockfd in$/;"	v	language:OCaml
 oc	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let oc = Lwt_io.of_fd Lwt_io.Output fd in$/;"	v	language:OCaml
 out_channels	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let out_channels = ref ChannelMap.empty$/;"	v	language:OCaml
+require_module	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/modules.ml	/^let require_module s =$/;"	v	language:OCaml
 serv	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let serv = create_server sock in$/;"	v	language:OCaml
 sock	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let sock = create_socket Unix.inet_addr_any 9000 100 in$/;"	v	language:OCaml
+sockfd	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^  let sockfd = Lwt_unix.socket PF_INET SOCK_STREAM 0 in$/;"	v	language:OCaml
+start_inc	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^  let start_inc, start_out = create_channels () in$/;"	v	language:OCaml
 t	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  type t = int$/;"	t	language:OCaml	Module:Int
+textview	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/lablgtk_test.ml	/^  let textview = GText.view ~packing:scroll#add_with_viewport () in$/;"	v	language:OCaml
+threads	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_client.ml	/^  let threads = Lwt.join [start_out (); start_inc ()] in$/;"	v	language:OCaml
 uid	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let uid = !next_uid in$/;"	v	language:OCaml

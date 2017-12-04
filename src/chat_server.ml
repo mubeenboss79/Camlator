@@ -1,3 +1,5 @@
+(* NOTE: To create client side sockets, use WebSockets *)
+
 open Lwt
 
 (* UID of each client *)
@@ -60,6 +62,7 @@ let rec handle_connection ic oc uid () =
     (fun msg ->
       match msg with
       | Some msg -> 
+          Lwt_log.info ("Got message: " ^ msg) >>= fun () ->
           let reply = handle_message msg in
           Lwt_io.write_line oc reply >>= handle_connection ic oc uid
       | None -> 
@@ -83,9 +86,8 @@ let accept_connection conn =
 
 (* [create_server sock] accepts connections indefinitely from [sock] *)
 let create_server sock =
-  let rec serv () =
-    Lwt_unix.accept sock >>= accept_connection >>= serv
-  in serv
+  let rec serv () = Lwt_unix.accept sock >>= accept_connection >>= serv in
+  serv
 
 (* [create_socket listen_address port backlog] creates a TCP socket on host
  * [listen_address] and port [port]. [backlog] specifies the max number of

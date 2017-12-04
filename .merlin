@@ -6,3 +6,5 @@ PKG Cohttp-lwt-unix
 PKG Ipaddr
 PKG Conduit-lwt-unix
 PKG Batteries
+PKG lablgtk2
+PKG js_of_ocaml
