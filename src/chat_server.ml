@@ -5,6 +5,9 @@ open Lwt
 (* UID of each client *)
 let next_uid = ref 0
 
+(* Message log *)
+let message_log = ref ""
+
 (* Wrapper around [int] that is an OrderedType *)
 module Int = struct
   type t = int
@@ -45,6 +48,7 @@ let () =
 let handle_message msg uid =
   match Str.bounded_split (Str.regexp_string " ") msg 3 with
     | ["chat"; cid; msg] -> 
+        message_log := !message_log ^ "\n" ^ msg;
         ChannelMap.mapi
           (fun key oc -> 
             if key <> uid then Lwt_io.write_line oc msg
@@ -83,6 +87,8 @@ let accept_connection conn =
   let oc = Lwt_io.of_fd Lwt_io.Output fd in
   let uid = !next_uid in
   out_channels := ChannelMap.add uid oc !out_channels;
+  if !message_log <> "" then
+    ignore(Lwt_io.write_line oc !message_log);
   next_uid := !next_uid + 1;
   Lwt.on_failure 
     (handle_connection ic oc uid ()) 
@@ -106,7 +112,7 @@ let create_socket listen_address port backlog =
 
 (* Main Function -- Starts up the server *)
 let () =
-  let sock = create_socket (Unix.inet_addr_of_string "10.129.12.40") 9000 100 in
+  let sock = create_socket (Unix.inet_addr_any) 9000 100 in
   let serv = create_server sock in
   Lwt_main.run @@ serv ()
 
