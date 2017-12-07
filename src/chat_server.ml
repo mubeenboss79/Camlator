@@ -112,7 +112,7 @@ let create_socket listen_address port backlog =
 
 (* Main Function -- Starts up the server *)
 let () =
-  let sock = create_socket (Unix.inet_addr_any) 9000 100 in
+  let sock = create_socket (Unix.inet_addr_of_string "10.129.1.203") 9000 100 in
   let serv = create_server sock in
   Lwt_main.run @@ serv ()
 

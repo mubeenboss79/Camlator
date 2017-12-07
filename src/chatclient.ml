@@ -37,7 +37,8 @@ let rec handle_incoming_msg ic oc messages textbox pref_lang () =
 let create_channels () =
   let open Lwt_unix in
   let sockfd = Lwt_unix.socket PF_INET SOCK_STREAM 0 in
-  let _ = Lwt_unix.connect sockfd @@ ADDR_INET(Unix.inet_addr_any, 9000) in
+  let _ = Lwt_unix.connect sockfd @@ ADDR_INET(Unix.inet_addr_of_string
+  "10.129.1.203", 9000) in
   let ic = Lwt_io.of_fd Lwt_io.Input sockfd in
   let oc = Lwt_io.of_fd Lwt_io.Output sockfd in
   (handle_incoming_msg ic oc), (handle_outgoing_msg oc)
