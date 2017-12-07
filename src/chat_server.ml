@@ -87,7 +87,7 @@ let () =
 
 (******************* Start up the Server *********************)
 let () =
-  let ip_addr = "PLACE IP ADDRESS HERE" in 
+  let ip_addr = "10.127.19.254" in (* PLACE YOUR IP ADDRESS HERE*)
   let host_addr = Unix.inet_addr_of_string ip_addr in
   let port = 9000 in
   let backlog = 100 in
