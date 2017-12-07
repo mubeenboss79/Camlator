@@ -1,6 +1,4 @@
-# Camlator
-Final project repo for CS 3110 
-
+README.txt 
 
 Dependencies to run Camlator: 
 Node 
