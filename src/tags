@@ -52,7 +52,7 @@ sock	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/cha
 start_gui	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let start_gui, handle_incoming_msg = setup_threads () in$/;"	v	language:OCaml
 start_recv	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let start_recv, start_send = Chatclient.create_channels ()$/;"	v	language:OCaml
 Stringliterals	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/stringliterals.ml	/^let emojis_list = [$/;"	M	language:OCaml
-Stringliterals	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/stringliterals.mli	/^val emojis_list : string list$/;"	M	language:OCaml
+Stringliterals	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/stringliterals.mli	/^(* List of emojis *)$/;"	M	language:OCaml
 t	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  type t = int$/;"	t	language:OCaml	Module:Int
 threads	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let threads = Lwt.join [$/;"	v	language:OCaml
 tmp	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let tmp = GBin.frame ~label:"Name" ~packing: namebox#add () in$/;"	v	language:OCaml
