@@ -3,83 +3,84 @@ open GMain
 open GdkKeysyms
 let (>>=) = Lwt.bind
 let messages = ref "Welcome to the CS3110 chatroom!"
-let pref_lang = ref "es"
+let pref_lang = ref "en"
 let user_name = ref "Camlator User"
 let start_recv, start_send = Chatclient.create_channels ()
-let emojs_list = ["ʘ‿ʘ"; "ಠ_ಠ"; 
-				"(╯°□°）╯︵ ┻━┻";
-				"┬─┬﻿ ノ( ゜-゜ノ)"; 
-				"┬─┬⃰͡ (ᵔᵕᵔ͜ )"; 
-				"┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻";
-				"ლ(｀ー´ლ)";
-				"ʕ•ᴥ•ʔ";
-				"ʕᵔᴥᵔʔ";
-				"(｡◕‿◕｡)";
-				"（　ﾟДﾟ）";
-				"¯\\_(ツ)_/¯";
-				"¯\\(°_o)/¯";
-				"(`･ω･´)"; 
-				"(╬ ಠ益ಠ)";
-				"☜(⌒▽⌒)☞";
-				"ε=ε=ε=┌(;*´Д`)ﾉ";
-				"ヽ(´▽`)/"; 
-				"ヽ(´ー｀)ノ";
-				"ᵒᴥᵒ#";
-				"V●ᴥ●V";
-				"ฅ^•ﻌ•^ฅ";
-				"（ ^_^）o自自o（^_^ ）";
-				"ಠ‿ಠ";
-				"( ͡° ͜ʖ ͡°)";  
-				"ಥ_ಥ";
-				"ಥ﹏ಥ";
-				"٩◔̯◔۶";
-				"ᕙ(⇀‸↼‶)ᕗ";
-				"ᕦ(ò_óˇ)ᕤ";
-				"⊂(◉‿◉)つ";
-				"q(❂‿❂)p";
-				"⊙﹏⊙";
-				"¯\\_(⊙︿⊙)_/¯";
-				"°‿‿°";
-				"¿ⓧ_ⓧﮌ";
-				"(⊙.☉)7";
-				"(´･_･`)";
-				"щ（ﾟДﾟщ）";
-				"٩(͡๏_๏)۶";
-				"ఠ_ఠ";
-				"ᕕ( ᐛ )ᕗ";
-				"(⊙_◎)";
-				"ミ●﹏☉ミ";
-				"༼∵༽ ༼⍨༽ ༼⍢༽ ༼⍤༽";
-				"ヽ༼ ಠ益ಠ ༽ﾉ";
-				"t(-_-t)";
-				"(ಥ⌣ಥ)";
-				"(づ￣ ³￣)づ";
-				"(づ｡◕‿‿◕｡)づ";
-				"｡ﾟ( ﾟஇ‸இﾟ)ﾟ｡";
-				"༼ ༎ຶ ෴ ༎ຶ༽";
-				"┌(ㆆ㉨ㆆ)ʃ";
-				"눈_눈";
-				"( ఠൠఠ )ﾉ";
-				"乁( ◔ ౪◔)「      ┑(￣Д ￣)┍";
-				"(๑•́ ₃ •̀๑) ";
-				"⁽⁽ଘ( ˊᵕˋ )ଓ⁾⁾";
-				"◔_◔";
-				"♥‿♥";
-				"ԅ(≖‿≖ԅ)";
-				"( ˘ ³˘)♥ ";
-				"( ˇ෴ˇ )";
-				"ヾ(-_- )ゞ ";
-				"♪♪ ヽ(ˇ∀ˇ )ゞ";
-				"ヾ(´〇`)ﾉ♪♪♪";
-				"ʕ •́؈•̀ ₎";
-				"ლ(•́•́ლ)";
-				"{•̃_•̃}";
-				"(ᵔᴥᵔ)";
-				"(Ծ‸ Ծ)";
-				"(•̀ᴗ•́)و ̑̑";
-				"[¬º-°]¬";
-				"(☞ﾟヮﾟ)☞";
-				] 
+let emojs_list = [
+	"ʘ‿ʘ"; "ಠ_ಠ"; 
+	"(╯°□°）╯︵ ┻━┻";
+	"┬─┬﻿ ノ( ゜-゜ノ)"; 
+	"┬─┬⃰͡ (ᵔᵕᵔ͜ )"; 
+	"┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻";
+	"ლ(｀ー´ლ)";
+	"ʕ•ᴥ•ʔ";
+	"ʕᵔᴥᵔʔ";
+	"(｡◕‿◕｡)";
+	"（　ﾟДﾟ）";
+	"¯\\_(ツ)_/¯";
+	"¯\\(°_o)/¯";
+	"(`･ω･´)"; 
+	"(╬ ಠ益ಠ)";
+	"☜(⌒▽⌒)☞";
+	"ε=ε=ε=┌(;*´Д`)ﾉ";
+	"ヽ(´▽`)/"; 
+	"ヽ(´ー｀)ノ";
+	"ᵒᴥᵒ#";
+	"V●ᴥ●V";
+	"ฅ^•ﻌ•^ฅ";
+	"（ ^_^）o自自o（^_^ ）";
+	"ಠ‿ಠ";
+	"( ͡° ͜ʖ ͡°)";  
+	"ಥ_ಥ";
+	"ಥ﹏ಥ";
+	"٩◔̯◔۶";
+	"ᕙ(⇀‸↼‶)ᕗ";
+	"ᕦ(ò_óˇ)ᕤ";
+	"⊂(◉‿◉)つ";
+	"q(❂‿❂)p";
+	"⊙﹏⊙";
+	"¯\\_(⊙︿⊙)_/¯";
+	"°‿‿°";
+	"¿ⓧ_ⓧﮌ";
+	"(⊙.☉)7";
+	"(´･_･`)";
+	"щ（ﾟДﾟщ）";
+	"٩(͡๏_๏)۶";
+	"ఠ_ఠ";
+	"ᕕ( ᐛ )ᕗ";
+	"(⊙_◎)";
+	"ミ●﹏☉ミ";
+	"༼∵༽ ༼⍨༽ ༼⍢༽ ༼⍤༽";
+	"ヽ༼ ಠ益ಠ ༽ﾉ";
+	"t(-_-t)";
+	"(ಥ⌣ಥ)";
+	"(づ￣ ³￣)づ";
+	"(づ｡◕‿‿◕｡)づ";
+	"｡ﾟ( ﾟஇ‸இﾟ)ﾟ｡";
+	"༼ ༎ຶ ෴ ༎ຶ༽";
+	"┌(ㆆ㉨ㆆ)ʃ";
+	"눈_눈";
+	"( ఠൠఠ )ﾉ";
+	"乁( ◔ ౪◔)「      ┑(￣Д ￣)┍";
+	"(๑•́ ₃ •̀๑) ";
+	"⁽⁽ଘ( ˊᵕˋ )ଓ⁾⁾";
+	"◔_◔";
+	"♥‿♥";
+	"ԅ(≖‿≖ԅ)";
+	"( ˘ ³˘)♥ ";
+	"( ˇ෴ˇ )";
+	"ヾ(-_- )ゞ ";
+	"♪♪ ヽ(ˇ∀ˇ )ゞ";
+	"ヾ(´〇`)ﾉ♪♪♪";
+	"ʕ •́؈•̀ ₎";
+	"ლ(•́•́ლ)";
+	"{•̃_•̃}";
+	"(ᵔᴥᵔ)";
+	"(Ծ‸ Ծ)";
+	"(•̀ᴗ•́)و ̑̑";
+	"[¬º-°]¬";
+	"(☞ﾟヮﾟ)☞";
+	] 
 
 
 let languages = [
@@ -189,6 +190,9 @@ let languages = [
     "Yoruba";
     "Zulu";
     ]
+
+(* Changes the preferred language once an option is clicked in the 
+ * language combo box *)
 
 let changed_and_get_active (combo : #GEdit.combo_box) column cb =
   combo#connect#changed
@@ -313,6 +317,7 @@ let changed_and_get_active (combo : #GEdit.combo_box) column cb =
 
     cb !pref_lang)
 
+(*Setups the combobox for the Language selection drop down *)
 let setup_combobox_text packing =  
   let tmp = GBin.frame ~label:"Language" ~packing () in
   let box = GPack.vbox ~border_width:8 ~packing:tmp#add () in
@@ -323,7 +328,7 @@ let setup_combobox_text packing =
   ignore (changed_and_get_active combo column prerr_endline);
   ()
 
-
+(* Sends message to textbox after enter is pressed in the entry box *)
 let enter_callback entry text =
   let entry_text = entry#text in
   printf "Entry contents: %s\n" entry_text;
@@ -336,6 +341,7 @@ let enter_callback entry text =
   start_send ("chat 1 " ^ !user_name ^ ": " ^str_utf8) () |> ignore;
   ()
 
+(* Changes the person's username in the messenger app *) 
 let name_callback entry text =
   let entry_text = entry#text in
   printf "Name changed to: %s\n" entry_text;
@@ -349,18 +355,6 @@ let name_callback entry text =
   flush stdout;
   start_send ("chat 1 " ^ !user_name ^ " changed their name to: " ^ str_utf8) () |> ignore;
   ()
-(*
-  Httpclient.translate_msg str_utf8 >>= (fun t_msg ->
-  start_send ("chat 1 " ^ t_msg) () >>= Lwt.return) |> ignore;
-*)
-(*   Chatclient.broadcast_msg t_msg *)
-
-(* let entry_toggle_editable button entry =
-  entry#set_editable button#active
-
-let entry_toggle_visibility button entry = 
-   entry#set_visibility button#active 
- *)
 
 let setup_threads () =
   (* Initializes GTK. *)
@@ -381,12 +375,10 @@ let setup_threads () =
   (*Menu bar*)
   let menubar = GMenu.menu_bar ~packing:vbox#pack () in
   let factory = new GMenu.factory menubar in
-  let accel_group = factory#accel_group in
-  let file_menu = factory#add_submenu "Prefrences" in
-
-  (* File menu *)
-  let factory = new GMenu.factory file_menu ~accel_group in
-  factory#add_item "Quit" ~key:_Q ~callback: Main.quit |> ignore; 
+  let accel_group = factory#accel_group in 
+  let file_menu = factory#add_submenu "Menu" in
+  ignore(accel_group); 
+  ignore(file_menu); 
 
   (*Text box for messages*)
   let scrollwin = GBin.scrolled_window ~width: 400 ~height: 400  ~packing:vbox#add () in
@@ -412,9 +404,7 @@ let changed_and_get_active_emojis (combo : #GEdit.combo_box) column cb entry =
       | None -> ()
       | Some row ->  
     let emoji = combo#model#get ~row ~column in
-
    	let curr_text = entry#text in 
-
    	entry#set_text curr_text;
    	entry#append_text " ";
    	entry#append_text emoji;
@@ -432,9 +422,7 @@ let setup_combobox_emojis packing =
   changed_and_get_active_emojis combo column prerr_endline entry;
   in 
 
-
   setup_combobox_text hbox#pack; 
-
 
   (*Make the User name's frames and text box *)
   let namebox = GPack.vbox ~packing: (hbox#pack ~padding: 30) () in
