@@ -33,12 +33,17 @@ let translate_msg msg pref_lang =
   body |> Cohttp_lwt.Body.to_string >|= fun body ->
   Printf.printf "Body of length: %d\n" (String.length body);
   Printf.printf "Body: %s\n" (body);
-  let open Yojson.Basic.Util in
-  let lst1 = Yojson.Basic.from_string body |> to_list in
-  let lst2 = List.nth lst1 0 |> to_list in
-  let lst3 = List.nth lst2 0 |> to_list in
-  List.nth lst3 0 |> to_string
-  
+  try
+    let open Yojson.Basic.Util in
+    let lst1 = Yojson.Basic.from_string body |> to_list in
+    let lst2 = List.nth lst1 0 |> to_list in
+    let lst3 = List.nth lst2 0 |> to_list in
+    List.nth lst3 0 |> to_string
+  with
+    | Yojson.Json_error e ->
+        Printf.printf "Got an error: %s" e;
+        msg
+    | _ -> msg
 
 (*
 let () =
