@@ -39,7 +39,7 @@ let rec process_incoming_msg ic messages textbox pref_lang () =
 let create_channels () =
   let open Lwt_unix in
   let sockfd = Lwt_unix.socket PF_INET SOCK_STREAM 0 in
-  let host_addr = Unix.inet_addr_of_string "10.129.1.203" in
+  let host_addr = Unix.inet_addr_of_string "10.129.19.254" in
   let port = 9000 in
   let _ = Lwt_unix.connect sockfd @@ ADDR_INET(host_addr, port) in
   let ic = Lwt_io.of_fd Lwt_io.Input sockfd in
