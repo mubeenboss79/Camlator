@@ -1,5 +1,3 @@
-(* NOTE: To create client side sockets, use WebSockets *)
-
 open Lwt
 
 (* UID of each client *)
@@ -24,7 +22,59 @@ end
 module ChannelMap = Map.Make(Int)
 let out_channels = ref ChannelMap.empty
 
-(**************** Weird logging stuff ****************)
+(* [parse_msg msg] takes a [msg] and broadcasts to everyone
+ * based on a custom protocol. The main messages that will be sent are of the
+ * form "chat <id> <msg>", where <id> is the id of the sender and <msg> is
+ * whatever message they're trying to send *)
+let parse_msg msg uid =
+  begin match Str.bounded_split (Str.regexp_string " ") msg 3 with
+    | ["chat"; cid; msg] -> 
+        message_log := !message_log ^ "\n" ^ msg;
+        ChannelMap.iter
+          (fun key oc -> if key <> uid then Lwt_io.write_line oc msg |> ignore;)
+          !out_channels;
+        Lwt_log.info "Message sent." |> ignore;
+    | _ ->
+        Lwt_log.info "Unknown command" |> ignore;
+  end
+
+(* [process_requests ic oc] is the thread for handling messages coming in from
+ * [ic] - some input channel - and returning some data through [oc] - some
+ * output channel. *)
+let rec process_requests ic oc uid () =
+  Lwt_io.read_line_opt ic >>= fun msg ->
+  match msg with
+  | Some msg -> 
+      Lwt_log.info ("Got message: " ^ msg) >>= fun () ->
+      parse_msg msg uid;
+      process_requests ic oc uid ()
+  | None -> 
+      out_channels := ChannelMap.remove uid !out_channels;
+      Lwt_log.info "Connection closed" >>= return
+
+(* [handle_new_conn conn] starts a [process_requests] thread for [conn],
+ * which gets passed whenever a connection has been accepted on the server's
+ * socket *)
+let handle_new_conn conn =
+  let fd = fst conn in
+  let ic = Lwt_io.of_fd Lwt_io.Input fd in
+  let oc = Lwt_io.of_fd Lwt_io.Output fd in
+  let uid = !next_uid in
+  out_channels := ChannelMap.add uid oc !out_channels;
+  if !message_log <> "" then
+    Lwt_io.write_line oc !message_log |> ignore;
+  next_uid := !next_uid + 1;
+  Lwt.on_failure
+    (process_requests ic oc uid ()) 
+    (fun e -> Lwt_log.ign_error (Printexc.to_string e));
+  Lwt_log.info "New connection" >>= return
+
+(* [accept_connections sock] is a thread that accepts connections indefinitely
+ * from [sock] *)
+let rec accept_connections sock () =
+  Lwt_unix.accept sock >>= handle_new_conn >>= accept_connections sock
+
+(**************** Enable Logging to Terminal ****************)
 let () =
   Lwt_log_core.default :=
     Lwt_log.channel
@@ -32,87 +82,16 @@ let () =
       ~close_mode:`Keep
       ~channel:Lwt_io.stdout
       ();
-
   Lwt_log_core.add_rule "*" Lwt_log_core.Info;
+  Lwt_main.run (Lwt_log_core.info "Started server...")
 
-  Lwt_main.run begin
-    Lwt_log_core.info "Started server..."
-  end
-(*   let () = Lwt_log.add_rule "*" Lwt_log.Info *)
-(******************************************************)
-
-(* [handle_message msg] takes a [msg] and returns some response as a string
- * based on a custom protocol. The main messages that will be sent are of the
- * form "chat <id> <msg>", where <id> is the id of the sender and <msg> is
- * whatever message they're trying to send *)
-let handle_message msg uid =
-  match Str.bounded_split (Str.regexp_string " ") msg 3 with
-    | ["chat"; cid; msg] -> 
-        message_log := !message_log ^ "\n" ^ msg;
-        ChannelMap.mapi
-          (fun key oc -> 
-            if key <> uid then Lwt_io.write_line oc msg
-            else return ()) 
-          !out_channels
-        |> ignore;
-        "Message sent."
-    | ["parts"] -> 
-        ChannelMap.fold (fun k _ acc -> acc ^ (string_of_int k) ^ ", ")
-          !out_channels "Participants: "
-    | _ ->
-        "Unknown command"
-
-(* [handle_connection ic oc] is the thread for handling messages coming in from
- * [ic] - some input channel - and returning some data through [oc] - some
- * output channel. *)
-let rec handle_connection ic oc uid () =
-  Lwt_io.read_line_opt ic >>=
-    (fun msg ->
-      match msg with
-      | Some msg -> 
-          Lwt_log.info ("Got message: " ^ msg) >>= fun () ->
-          let _ = handle_message msg uid in
-(*           Lwt_io.write_line oc reply >>=  *)
-          handle_connection ic oc uid ()
-      | None -> 
-          out_channels := ChannelMap.remove uid !out_channels;
-          Lwt_log.info "Connection closed" >>= return)
-
-(* [accept_connection conn] starts a [handle_connection] thread for [conn],
- * which gets passed whenever a connection has been accepted on the server's
- * socket *)
-let accept_connection conn =
-  let fd, _ = conn in
-  let ic = Lwt_io.of_fd Lwt_io.Input fd in
-  let oc = Lwt_io.of_fd Lwt_io.Output fd in
-  let uid = !next_uid in
-  out_channels := ChannelMap.add uid oc !out_channels;
-  if !message_log <> "" then
-    ignore(Lwt_io.write_line oc !message_log);
-  next_uid := !next_uid + 1;
-  Lwt.on_failure 
-    (handle_connection ic oc uid ()) 
-    (fun e -> Lwt_log.ign_error (Printexc.to_string e));
-  Lwt_log.info "New connection" >>= return
-
-(* [create_server sock] accepts connections indefinitely from [sock] *)
-let create_server sock =
-  let rec serv () = Lwt_unix.accept sock >>= accept_connection >>= serv in
-  serv
-
-(* [create_socket listen_address port backlog] creates a TCP socket on host
- * [listen_address] and port [port]. [backlog] specifies the max number of
- * pending requests (as in Unix.listen). *)
-let create_socket listen_address port backlog =
-  let open Lwt_unix in
-  let sock = socket PF_INET SOCK_STREAM 0 in
-  let _ = bind sock @@ ADDR_INET(listen_address, port) in
-  listen sock backlog;
-  sock
-
-(* Main Function -- Starts up the server *)
+(******************* Start up the Server *********************)
 let () =
-  let sock = create_socket (Unix.inet_addr_of_string "10.129.1.203") 9000 100 in
-  let serv = create_server sock in
-  Lwt_main.run @@ serv ()
+  let host_addr = Unix.inet_addr_of_string "10.129.1.203" in
+  let port = 9000 in
+  let backlog = 100 in
+  let sock = Lwt_unix.socket Lwt_unix.PF_INET Lwt_unix.SOCK_STREAM 0 in
+  Lwt_unix.bind sock (Lwt_unix.ADDR_INET(host_addr, port)) |> ignore;
+  Lwt_unix.listen sock backlog;
+  Lwt_main.run (accept_connections sock ())
 

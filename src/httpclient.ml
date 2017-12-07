@@ -2,7 +2,8 @@ open Lwt
 open Cohttp
 open Cohttp_lwt_unix
 
-(* Returns the first line of output from running [cmd] *)
+(* [run cmd] starts a new process using the shell command [cmd]. Then returns
+ * the last line of output from this [cmd], or "" if nothing. *)
 let run cmd =
   let inp = Unix.open_process_in cmd in
   let rec handle_cmd prev_output =
@@ -15,6 +16,10 @@ let run cmd =
   ignore(Unix.close_process_in inp);
   res
 
+(* [translate_msg msg pref_lang] is the translated version of [msg] to
+ * [pref_lang] using Google Translate. Since it costs money to actually use
+ * their API, we run a simple javascript process that generates tokens for us
+ * based on some Node.js package to be able to use it.*)
 let translate_msg msg pref_lang =
   let ret_output = run ("node js_files/generate_token.js" ^ " " ^ msg) in
   let tokens = Str.split (Str.regexp_string " ") ret_output in
@@ -26,6 +31,7 @@ let translate_msg msg pref_lang =
     msg ^ "&" ^ (List.nth tokens 0) ^ "=" ^ (List.nth tokens 1)
   in
   Printf.printf "URL: %s\n" url;
+  (* Adapted from Cohttp github examples *)
   Client.get (Uri.of_string url) >>= fun (resp, body) ->
   let code = resp |> Response.status |> Code.code_of_status in
   Printf.printf "Response code: %d\n" code;
@@ -44,9 +50,3 @@ let translate_msg msg pref_lang =
         Printf.printf "Got an error: %s" e;
         msg
     | _ -> msg
-
-(*
-let () =
-  let body = Lwt_main.run body in
-  print_endline ("Received body\n" ^ body)
-*)
