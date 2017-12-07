@@ -11,3 +11,4 @@ all: server chatbox
 
 clean:
 	ocamlbuild -clean
+	rm chatbox.byte chat_server.byte

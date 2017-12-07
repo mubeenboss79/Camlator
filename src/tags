@@ -1,19 +1,21 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
 >>=	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let (>>=) = Lwt.bind$/;"	f	language:OCaml
-button	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let button = GButton.button ~label: "Close" ~packing: vbox#add () in$/;"	v	language:OCaml
+box	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let box = GPack.vbox ~border_width:8 ~packing:tmp#add () in$/;"	v	language:OCaml
+box	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let box = GPack.vbox ~border_width:8 ~packing:tmp#add () in$/;"	v	language:OCaml
+button	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let button = GButton.button ~label: "Close" ~packing:(hbox#pack ~padding:15) () in$/;"	v	language:OCaml
+changed_and_get_active	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let changed_and_get_active (combo : #GEdit.combo_box) column cb =$/;"	v	language:OCaml
+changed_and_get_active_emojis	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let changed_and_get_active_emojis (combo : #GEdit.combo_box) column cb entry =$/;"	v	language:OCaml
 ChannelMap	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^module ChannelMap = Map.Make(Int)$/;"	M	language:OCaml
 Chatbox	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^open Printf$/;"	M	language:OCaml
 Chatclient	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatclient.ml	/^open Lwt$/;"	M	language:OCaml
 Chat_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^(* NOTE: To create client side sockets, use WebSockets *)$/;"	M	language:OCaml
-check	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let check = GButton.check_button $/;"	v	language:OCaml
-check	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let check = GButton.check_button ~label: "Editable" ~active: true$/;"	v	language:OCaml
+combo	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let (combo, (_, column)) = $/;"	v	language:OCaml
 compare	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let compare a b =$/;"	v	language:OCaml	Module:Int
 create_channels	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatclient.ml	/^let create_channels () =$/;"	v	language:OCaml
 create_server	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let create_server sock =$/;"	v	language:OCaml
 create_socket	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let create_socket listen_address port backlog =$/;"	v	language:OCaml
+emojs_list	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let emojs_list = [$/;"	v	language:OCaml
 enter_callback	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let enter_callback entry text =$/;"	v	language:OCaml
-entry_toggle_editable	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let entry_toggle_editable button entry =$/;"	v	language:OCaml
-entry_toggle_visibility	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let entry_toggle_visibility button entry = $/;"	v	language:OCaml
 handle_connection	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let rec handle_connection ic oc uid () =$/;"	v	language:OCaml
 handle_incoming_msg	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatclient.ml	/^let rec handle_incoming_msg ic oc messages textbox pref_lang () =$/;"	v	language:OCaml
 handle_message	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let handle_message msg uid =$/;"	v	language:OCaml
@@ -22,21 +24,28 @@ Httpclient	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/s
 Httpclient	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/httpclient.mli	/^val run : string -> string$/;"	M	language:OCaml
 ic	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let ic = Lwt_io.of_fd Lwt_io.Input fd in$/;"	v	language:OCaml
 Int	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^module Int = struct$/;"	M	language:OCaml
+languages	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let languages = [$/;"	v	language:OCaml
 messages	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let messages = ref "Welcome to the CS3110 chatroom!"$/;"	v	language:OCaml
 message_log	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let message_log = ref ""$/;"	v	language:OCaml
+name	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let name = GEdit.entry ~max_length: 50 ~packing:(box#pack )() in$/;"	v	language:OCaml
+namebox	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let namebox = GPack.vbox ~packing: (hbox#pack ~padding: 30) () in$/;"	v	language:OCaml
+name_callback	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let name_callback entry text =$/;"	v	language:OCaml
 next_uid	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let next_uid = ref 0$/;"	v	language:OCaml
 oc	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let oc = Lwt_io.of_fd Lwt_io.Output fd in$/;"	v	language:OCaml
 out_channels	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^let out_channels = ref ChannelMap.empty$/;"	v	language:OCaml
-pref_lang	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let pref_lang = ref "es"$/;"	v	language:OCaml
+pref_lang	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let pref_lang = ref "en"$/;"	v	language:OCaml
 run	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/httpclient.ml	/^let run cmd =$/;"	v	language:OCaml
 run	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/httpclient.mli	/^val run : string -> string$/;"	v	language:OCaml
 serv	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let serv = create_server sock in$/;"	v	language:OCaml
+setup_combobox_emojis	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let setup_combobox_emojis packing =  $/;"	v	language:OCaml
 setup_threads	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let setup_threads () =$/;"	v	language:OCaml
 sock	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let sock = create_socket (Unix.inet_addr_of_string "10.129.1.203") 9000 100 in$/;"	v	language:OCaml
 start_gui	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let start_gui, handle_incoming_msg = setup_threads () in$/;"	v	language:OCaml
 start_recv	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let start_recv, start_send = Chatclient.create_channels ()$/;"	v	language:OCaml
 t	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  type t = int$/;"	t	language:OCaml	Module:Int
 threads	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let threads = Lwt.join [$/;"	v	language:OCaml
+tmp	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^  let tmp = GBin.frame ~label:"Name" ~packing: namebox#add () in$/;"	v	language:OCaml
 translate_msg	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/httpclient.ml	/^let translate_msg msg pref_lang =$/;"	v	language:OCaml
 translate_msg	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/httpclient.mli	/^val translate_msg : string -> string -> string Lwt.t$/;"	v	language:OCaml
 uid	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chat_server.ml	/^  let uid = !next_uid in$/;"	v	language:OCaml
+user_name	/Users/chrisroman/CornellWork/Fall_2017/CS3110/assignments/Camlator/src/chatbox.ml	/^let user_name = ref "Camlator User"$/;"	v	language:OCaml
