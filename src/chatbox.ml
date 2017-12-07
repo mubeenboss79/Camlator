@@ -372,7 +372,7 @@ let setup_threads () =
   (* Thread which is wakeup when the main window is closed. *)
   let waiter, wakener = Lwt.wait () in
 
-  let window=GWindow.window ~title: "Camalator Messenger" ~width: 600 ~height: 500 
+  let window=GWindow.window ~title: "Camalator Messenger" ~width: 680 ~height: 500 
             ~allow_grow:true ~allow_shrink:true () in
   window#connect#destroy ~callback:Main.quit |> ignore;
 
@@ -394,7 +394,7 @@ let setup_threads () =
   text#buffer#insert "Welcome to the CS3110 chatroom!"; 
 
   (* text#misc#set_size_chars ~width:20 ~height:5 (); *)
-  let entry = GEdit.entry ~max_length: 500 ~packing: vbox#add () in
+  let entry = GEdit.entry ~max_length: 5000 ~packing: vbox#add () in
   entry#connect#activate ~callback:(fun () -> enter_callback entry text)
    |> ignore;
   entry#set_text "Send";
@@ -447,7 +447,7 @@ let setup_combobox_emojis packing =
   entry#select_region ~start:0 ~stop:entry#text_length;
 
   ignore (setup_combobox_emojis hbox#pack);
-  let button = GButton.button ~label: "Close" ~packing:(hbox#pack ~padding:150) () in
+  let button = GButton.button ~label: "Close" ~packing:(hbox#pack ~padding:15) () in
   button#connect#clicked ~callback:window#destroy |> ignore;
   button#grab_default ();
 
