@@ -6,6 +6,82 @@ let messages = ref "Welcome to the CS3110 chatroom!"
 let pref_lang = ref "es"
 let user_name = ref "Camlator User"
 let start_recv, start_send = Chatclient.create_channels ()
+let emojs_list = ["ʘ‿ʘ"; "ಠ_ಠ"; 
+				"(╯°□°）╯︵ ┻━┻";
+				"┬─┬﻿ ノ( ゜-゜ノ)"; 
+				"┬─┬⃰͡ (ᵔᵕᵔ͜ )"; 
+				"┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻";
+				"ლ(｀ー´ლ)";
+				"ʕ•ᴥ•ʔ";
+				"ʕᵔᴥᵔʔ";
+				"(｡◕‿◕｡)";
+				"（　ﾟДﾟ）";
+				"¯\\_(ツ)_/¯";
+				"¯\\(°_o)/¯";
+				"(`･ω･´)"; 
+				"(╬ ಠ益ಠ)";
+				"☜(⌒▽⌒)☞";
+				"ε=ε=ε=┌(;*´Д`)ﾉ";
+				"ヽ(´▽`)/"; 
+				"ヽ(´ー｀)ノ";
+				"ᵒᴥᵒ#";
+				"V●ᴥ●V";
+				"ฅ^•ﻌ•^ฅ";
+				"（ ^_^）o自自o（^_^ ）";
+				"ಠ‿ಠ";
+				"( ͡° ͜ʖ ͡°)";  
+				"ಥ_ಥ";
+				"ಥ﹏ಥ";
+				"٩◔̯◔۶";
+				"ᕙ(⇀‸↼‶)ᕗ";
+				"ᕦ(ò_óˇ)ᕤ";
+				"⊂(◉‿◉)つ";
+				"q(❂‿❂)p";
+				"⊙﹏⊙";
+				"¯\\_(⊙︿⊙)_/¯";
+				"°‿‿°";
+				"¿ⓧ_ⓧﮌ";
+				"(⊙.☉)7";
+				"(´･_･`)";
+				"щ（ﾟДﾟщ）";
+				"٩(͡๏_๏)۶";
+				"ఠ_ఠ";
+				"ᕕ( ᐛ )ᕗ";
+				"(⊙_◎)";
+				"ミ●﹏☉ミ";
+				"༼∵༽ ༼⍨༽ ༼⍢༽ ༼⍤༽";
+				"ヽ༼ ಠ益ಠ ༽ﾉ";
+				"t(-_-t)";
+				"(ಥ⌣ಥ)";
+				"(づ￣ ³￣)づ";
+				"(づ｡◕‿‿◕｡)づ";
+				"｡ﾟ( ﾟஇ‸இﾟ)ﾟ｡";
+				"༼ ༎ຶ ෴ ༎ຶ༽";
+				"┌(ㆆ㉨ㆆ)ʃ";
+				"눈_눈";
+				"( ఠൠఠ )ﾉ";
+				"乁( ◔ ౪◔)「      ┑(￣Д ￣)┍";
+				"(๑•́ ₃ •̀๑) ";
+				"⁽⁽ଘ( ˊᵕˋ )ଓ⁾⁾";
+				"◔_◔";
+				"♥‿♥";
+				"ԅ(≖‿≖ԅ)";
+				"( ˘ ³˘)♥ ";
+				"( ˇ෴ˇ )";
+				"ヾ(-_- )ゞ ";
+				"♪♪ ヽ(ˇ∀ˇ )ゞ";
+				"ヾ(´〇`)ﾉ♪♪♪";
+				"ʕ •́؈•̀ ₎";
+				"ლ(•́•́ლ)";
+				"{•̃_•̃}";
+				"(ᵔᴥᵔ)";
+				"(Ծ‸ Ծ)";
+				"(•̀ᴗ•́)و ̑̑";
+				"[¬º-°]¬";
+				"(☞ﾟヮﾟ)☞";
+				] 
+
+
 let languages = [
     "Automatic";
     "Afrikaans";
@@ -125,7 +201,7 @@ let changed_and_get_active (combo : #GEdit.combo_box) column cb =
     let lang = 
       begin
         match data with 
-        | "Automatic" -> "hello"; 
+        | "Automatic" -> "auto"; 
         | "Afrikaans" -> "af";
         | "Albanian" -> "sq";
         | "Amharic" -> "am";
@@ -243,16 +319,17 @@ let setup_combobox_text packing =
   let (combo, (_, column)) = 
     GEdit.combo_box_text ~packing:box#pack 
       ~strings: languages () in
-  combo#set_active 0 ;
-  changed_and_get_active combo column prerr_endline;
+  combo#set_active 0;
+  ignore (changed_and_get_active combo column prerr_endline);
   ()
+
 
 let enter_callback entry text =
   let entry_text = entry#text in
   printf "Entry contents: %s\n" entry_text;
   entry#set_text "";
   let str_utf8 = Glib.Convert.locale_to_utf8 entry_text in
-  messages := !messages ^ "\n\n" ^ !user_name ^ ": " ^str_utf8;
+  messages := !messages ^ "\n\n" ^ !user_name ^ ": " ^ str_utf8;
   let n_buff = GText.buffer ~text:(!messages) () in
   text#set_buffer n_buff;
   flush stdout;
@@ -326,7 +403,38 @@ let setup_threads () =
 
   let hbox = GPack.hbox ~packing: vbox#add () in
 
+
+(* Handles the printing of the emojis to the entry box *)
+let changed_and_get_active_emojis (combo : #GEdit.combo_box) column cb entry =
+  combo#connect#changed
+    (fun () ->
+      match combo#active_iter with
+      | None -> ()
+      | Some row ->  
+    let emoji = combo#model#get ~row ~column in
+
+   	let curr_text = entry#text in 
+
+   	entry#set_text curr_text;
+   	entry#append_text " ";
+   	entry#append_text emoji;
+    cb emoji)
+in
+
+(*The setup for the combobox for emojis *)
+let setup_combobox_emojis packing =  
+  let tmp = GBin.frame ~label:"Emojis" ~packing () in
+  let box = GPack.vbox ~border_width:8 ~packing:tmp#add () in
+  let (combo, (_, column)) = 
+    GEdit.combo_box_text ~packing:box#pack 
+      ~strings: emojs_list () in
+  combo#set_active 0 ;
+  changed_and_get_active_emojis combo column prerr_endline entry;
+  in 
+
+
   setup_combobox_text hbox#pack; 
+
 
   (*Make the User name's frames and text box *)
   let namebox = GPack.vbox ~packing: (hbox#pack ~padding: 30) () in
@@ -338,6 +446,7 @@ let setup_threads () =
   name#set_text "Camlator User";
   entry#select_region ~start:0 ~stop:entry#text_length;
 
+  ignore (setup_combobox_emojis hbox#pack);
   let button = GButton.button ~label: "Close" ~packing:(hbox#pack ~padding:150) () in
   button#connect#clicked ~callback:window#destroy |> ignore;
   button#grab_default ();
