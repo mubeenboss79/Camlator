@@ -21,7 +21,7 @@ let run cmd =
  * their API, we run a simple javascript process that generates tokens for us
  * based on some Node.js package to be able to use it.*)
 let translate_msg msg pref_lang =
-  let ret_output = run ("node js_files/generate_token.js" ^ " " ^ msg) in
+  let ret_output = run ("node ./generate_token.js" ^ " " ^ msg) in
   let tokens = Str.split (Str.regexp_string " ") ret_output in
   let url =
     "http://translate.google.com/translate_a/single?client=t&sl=auto&tl=" ^
